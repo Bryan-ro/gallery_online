@@ -1,5 +1,8 @@
 import { DateTime } from "luxon";
 import { BaseModel, beforeSave, column, hasMany, HasMany } from "@ioc:Adonis/Lucid/Orm";
+
+import { v4 as uuidv4 } from "uuid";
+
 import Hash from "@ioc:Adonis/Core/Hash";
 
 import Gallery from "App/Models/Gallery";
@@ -19,6 +22,11 @@ export default class User extends BaseModel {
 
   @hasMany(() => Gallery)
   public images: HasMany<typeof Gallery>;
+
+  @beforeSave()
+  public static async autoId(user: User) {
+    user.id = uuidv4();
+  }
 
   @beforeSave()
   public static async hashPassword(user: User) {

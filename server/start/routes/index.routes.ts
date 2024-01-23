@@ -1,3 +1,2 @@
-import Routes from "@ioc:Adonis/Core/Route";
-
-Routes.resource("/user", "TestesController");
+import "./User.routes";
+import "./Auth.routes";

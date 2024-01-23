@@ -6,6 +6,7 @@
  */
 
 import type { AuthConfig } from "@ioc:Adonis/Addons/Auth";
+import Env from "@ioc:Adonis/Core/Env";
 
 /*
 |--------------------------------------------------------------------------
@@ -17,7 +18,7 @@ import type { AuthConfig } from "@ioc:Adonis/Addons/Auth";
 |
 */
 const authConfig: AuthConfig = {
-  guard: "api",
+  guard: "jwt",
   guards: {
     /*
     |--------------------------------------------------------------------------
@@ -37,15 +38,12 @@ const authConfig: AuthConfig = {
 
       /*
       |--------------------------------------------------------------------------
-      | Redis provider for managing tokens
+      | Tokens provider
       |--------------------------------------------------------------------------
       |
-      | Uses Redis for managing tokens. We recommend using the "redis" driver
-      | over the "database" driver when the tokens based auth is the
-      | primary authentication mode.
-      |
-      | Redis ensure that all the expired tokens gets cleaned up automatically.
-      | Whereas with SQL, you have to cleanup expired tokens manually.
+      | Uses SQL database for managing tokens. Use the "database" driver, when
+      | tokens are the secondary mode of authentication.
+      | For example: The Github personal tokens
       |
       | The foreignKey column is used to make the relationship between the user
       | and the token. You are free to use any column name here.
@@ -53,8 +51,8 @@ const authConfig: AuthConfig = {
       */
       tokenProvider: {
         type: "api",
-        driver: "redis",
-        redisConnection: "local",
+        driver: "database",
+        table: "api_tokens",
         foreignKey: "user_id",
       },
 
@@ -103,7 +101,27 @@ const authConfig: AuthConfig = {
         | that time.
         |
         */
-        model: () => import("App/Models/Auth"),
+        model: () => import("App/Models/User"),
+      },
+    },
+    jwt: {
+      driver: "jwt",
+      publicKey: Env.get("JWT_PUBLIC_KEY", "").replace(/\\n/g, "\n"),
+      privateKey: Env.get("JWT_PRIVATE_KEY", "").replace(/\\n/g, "\n"),
+      persistJwt: false,
+      jwtDefaultExpire: "1d",
+      refreshTokenDefaultExpire: "10d",
+      tokenProvider: {
+        type: "api",
+        driver: "database",
+        table: "jwt_tokens",
+        foreignKey: "user_id",
+      },
+      provider: {
+        driver: "lucid",
+        identifierKey: "id",
+        uids: [],
+        model: () => import("App/Models/User"),
       },
     },
   },
