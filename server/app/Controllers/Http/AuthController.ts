@@ -20,7 +20,7 @@ export default class AuthController {
 
       const token = await auth.use("jwt").generate(user);
 
-      response.ok("Sucessfully logged in");
+      response.ok(token);
 
       response.cookie("authorization", token);
     } catch {
@@ -28,7 +28,9 @@ export default class AuthController {
     }
   }
 
-  public logout({ response }: HttpContextContract) {
+  public logout({ response, auth }: HttpContextContract) {
+    auth.use("jwt").revoke();
+
     response.cookie("authorization", "", {
       maxAge: 0,
     });

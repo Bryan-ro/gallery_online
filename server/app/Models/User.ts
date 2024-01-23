@@ -20,6 +20,9 @@ export default class User extends BaseModel {
   @column()
   public password: string;
 
+  @column()
+  public verified: boolean;
+
   @hasMany(() => Gallery)
   public images: HasMany<typeof Gallery>;
 
