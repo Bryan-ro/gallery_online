@@ -69,7 +69,8 @@ export default class AuthMiddleware {
       const guards = customGuards.length ? customGuards : [auth.name];
       await this.authenticate({ auth, request } as HttpContextContract, guards);
       await next();
-    } catch {
+    } catch (error) {
+      console.log(error);
       response.unauthorized("Not Logged in");
     }
   }

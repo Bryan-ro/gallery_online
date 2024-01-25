@@ -38,6 +38,11 @@ export default class User extends BaseModel {
     }
   }
 
+  @beforeSave()
+  public static async verifiedFalse(user: User) {
+    user.verified = false;
+  }
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime;
 

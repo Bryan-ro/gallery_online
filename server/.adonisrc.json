@@ -4,7 +4,8 @@
     "./commands",
     "@adonisjs/core/build/commands/index.js",
     "@adonisjs/repl/build/commands",
-    "@adonisjs/lucid/build/commands"
+    "@adonisjs/lucid/build/commands",
+    "@adonisjs/mail/build/commands"
   ],
   "exceptionHandlerNamespace": "App/Exceptions/Handler",
   "aliases": {
@@ -12,6 +13,9 @@
     "Config": "config",
     "Database": "database",
     "Contracts": "contracts"
+  },
+  "directories": {
+    "public": "public"
   },
   "preloads": [
     "./start/Routes/index.routes",
@@ -22,7 +26,9 @@
     "@adonisjs/core",
     "@adonisjs/auth",
     "@adonisjs/lucid",
-    "adonis5-jwt"
+    "adonis5-jwt",
+    "@adonisjs/mail",
+    "@adonisjs/view"
   ],
   "aceProviders": [
     "@adonisjs/repl"
@@ -40,5 +46,11 @@
   },
   "testProviders": [
     "@japa/preset-adonis/TestsProvider"
+  ],
+  "metaFiles": [
+    {
+      "pattern": "resources/views/**/*.edge",
+      "reloadServer": false
+    }
   ]
 }

@@ -33,7 +33,9 @@
       "@adonisjs/auth",
       "@adonisjs/lucid",
       "@adonisjs/redis",
-      "adonis5-jwt"
+      "adonis5-jwt",
+      "@adonisjs/mail",
+      "@adonisjs/view"
     ]
   }
 }
