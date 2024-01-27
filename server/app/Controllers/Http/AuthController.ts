@@ -50,17 +50,20 @@ export default class AuthController {
 
       const token = await auth.use("jwt").generate(user);
 
-      response.ok(token);
+      response.ok({
+        type: token.type,
+        token: token.accessToken,
+        expiresAt: token.expiresAt,
+      });
 
       response.cookie("authorization", token);
     } catch (error) {
-      response.unauthorized(error);
+      console.log(error);
+      response.unauthorized("Invalid credentials");
     }
   }
 
-  public logout({ response, auth }: HttpContextContract) {
-    auth.use("jwt").revoke();
-
+  public logout({ response }: HttpContextContract) {
     response.cookie("authorization", "", {
       maxAge: 0,
     });
