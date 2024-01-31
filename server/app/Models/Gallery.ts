@@ -1,9 +1,11 @@
 import { DateTime } from "luxon";
-import { BaseModel, column } from "@ioc:Adonis/Lucid/Orm";
+import { BaseModel, beforeSave, column } from "@ioc:Adonis/Lucid/Orm";
+
+import { v4 as uuidv4 } from "uuid";
 
 export default class Gallery extends BaseModel {
   @column({ isPrimary: true })
-  public id: number;
+  public id: string;
 
   @column()
   public image: string;
@@ -16,4 +18,9 @@ export default class Gallery extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime;
+
+  @beforeSave()
+  public static async autoId(gallery: Gallery) {
+    gallery.id = uuidv4();
+  }
 }
